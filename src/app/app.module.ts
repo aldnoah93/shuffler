@@ -14,9 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { ShuffleListComponent } from './shuffle-list/shuffle-list.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
-const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule, MatCardModule];
+const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatSnackBarModule];
 
 @NgModule({
   declarations: [
