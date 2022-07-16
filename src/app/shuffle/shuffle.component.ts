@@ -21,5 +21,9 @@ export class ShuffleComponent implements OnInit {
     this.shuffleItems.push({id: uuid(), description: description});
     this._snackBar.open("A new item has been added", "Close", { duration: 2000 });
   }
+  deleteItemById(id:string):void{
+    this.shuffleItems = this.shuffleItems.filter(item => item.id !== id);
+    this._snackBar.open("An item has been deleted", "Close", { duration: 2000 });
+  }
 
 }

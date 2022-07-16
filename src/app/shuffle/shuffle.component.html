@@ -1,3 +1,8 @@
-<main fxLayout="row" fxLayoutAlign="space-evenly center">
-    <app-shuffle-input-form (newItemEvent)="addItem($event)"></app-shuffle-input-form>
+<main fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="2em">
+    <div fxFlex.md="30">
+        <app-shuffle-input-form (newItemEvent)="addItem($event)"></app-shuffle-input-form>
+    </div>
+    <div fxFlex.md="40">
+        <app-shuffle-list [shuffleListItem]="shuffleItems" (itemDeleteByIdEvent)="deleteItemById($event)" fxFlexFill></app-shuffle-list>
+    </div>
 </main>
