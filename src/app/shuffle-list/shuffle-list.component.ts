@@ -9,6 +9,12 @@ import { ShuffleListItem } from 'src/models/shuffleList';
 export class ShuffleListComponent implements OnInit {
 
   @Input()
+  listTitle: string = "List";
+
+  @Input()
+  canDelete: boolean = true;
+
+  @Input()
   shuffleListItem: ShuffleListItem[] = [];
   
   @Output()
