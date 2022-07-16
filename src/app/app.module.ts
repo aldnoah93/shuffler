@@ -16,6 +16,7 @@ import {MatCardModule} from '@angular/material/card';
 import { ShuffleListComponent } from './shuffle-list/shuffle-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatListModule} from '@angular/material/list';
+import { ShuffleListItemsFromLocalStorageService } from './shuffleServices/shuffle-list-items-from-local-storage.service';
 
 
 const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatSnackBarModule, MatListModule];
@@ -34,7 +35,7 @@ const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule, Reactive
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [ShuffleListItemsFromLocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
