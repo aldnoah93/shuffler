@@ -1,16 +1,18 @@
-<main fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign.gt-md="start start" fxLayoutGap="2em">
-    <div fxFlex.lt-md="100" fxFlex.gt-md="30">
-        <app-shuffle-input-form (newItemEvent)="addItem($event)"></app-shuffle-input-form>
+<section fxLayout="column wrap" fxLayoutAlign="start stretch">
+    <div fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign.gt-md="start start" fxLayoutGap="2em">
+        <div fxFlex.lt-md="100" fxFlex.gt-md="30">
+            <app-shuffle-input-form (newItemEvent)="addItem($event)"></app-shuffle-input-form>
+        </div>
+        <div fxFlex.lt-md="100" fxFlex.gt-md="30">
+            <app-shuffle-list [listTitle]="'Added items'" [shuffleListItem]="shuffleItems"
+                (itemDeleteByIdEvent)="deleteItemById($event)" fxFlexFill></app-shuffle-list>
+        </div>
+        <div fxFlex.lt-md="100" fxFlex.gt-md="30" fxLayout.gt-md="row" fxLayout.lt-md="column">
+            <button mat-button (click)="shuffle()" color="accent">
+                <mat-icon aria-hidden="false" aria-label="Delete icon">autorenew</mat-icon>
+            </button>
+            <app-shuffle-list [listTitle]="'Shuffled items'" [shuffleListItem]="shuffledItems"
+                (itemDeleteByIdEvent)="deleteItemById($event)" fxFlexFill></app-shuffle-list>
+        </div>
     </div>
-    <div fxFlex.lt-md="100" fxFlex.gt-md="35">
-        <app-shuffle-list [listTitle]="'Added Items'" [shuffleListItem]="shuffleItems"
-            (itemDeleteByIdEvent)="deleteItemById($event)" fxFlexFill></app-shuffle-list>
-    </div>
-    <div fxFlex.lt-md="100" fxFlex.gt-md="35" fxLayout.gt-md="row" fxLayout.lt-md="column">
-        <button mat-button (click)="shuffle()" color="accent">
-            <mat-icon aria-hidden="false" aria-label="Delete icon">autorenew</mat-icon>
-        </button>
-        <app-shuffle-list [listTitle]="'Shuffled Items'" [shuffleListItem]="shuffledItems"
-            (itemDeleteByIdEvent)="deleteItemById($event)" fxFlexFill></app-shuffle-list>
-    </div>
-</main>
+</section>

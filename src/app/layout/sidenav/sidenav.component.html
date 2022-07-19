@@ -1,0 +1,13 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav>
+        <mat-nav-list>
+            <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'{{item.link}}'"> {{item.description}} </a>
+            <a mat-list-item (click)="toggle()" mat-list-item>Close</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div fxFill fxFlex="100" fxLayout="column" style="min-height: 100vh;">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

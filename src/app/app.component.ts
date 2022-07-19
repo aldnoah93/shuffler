@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MenuItem } from 'src/models/layout/menuItem';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'shuffler';
+  title: string = 'Shuffler app';
+
+  menuItems: Array<MenuItem> = [{description: 'Test', link: '/test'}];
 }
