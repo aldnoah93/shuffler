@@ -1,12 +1,14 @@
-<mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <button mat-icon-button (click)="toggle()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <h1>{{title}}</h1>
-        <span class="menu-spacer"></span>
-        <div>
-            <a *ngFor="let item of menuItems" mat-button [routerLink]="'{{item.link}}'"> {{item.description}} </a>
-        </div>
-    </mat-toolbar-row>
-</mat-toolbar>
+<header>
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <h1>{{title}}</h1>
+            <span class="menu-spacer"></span>
+            <div>
+                <a *ngFor="let item of menuItems" mat-button [routerLink]="'{{item.link}}'"> {{item.description}} </a>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</header>

@@ -1,13 +1,13 @@
-<mat-sidenav-container>
-    <mat-sidenav #sidenav>
-        <mat-nav-list>
-            <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'{{item.link}}'"> {{item.description}} </a>
-            <a mat-list-item (click)="toggle()" mat-list-item>Close</a>
+<mat-sidenav-container fxFlex>
+    <mat-sidenav #sidenav xLayout.gt-md="row" fxLayout.lt-md="column">
+        <mat-nav-list fxFlex.lt-md="100" fxFlex.gt-md="40">
+            <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'{{item.link}}'"><mat-icon *ngIf="!!item.icon" aria-hidden="false">{{item.icon}}</mat-icon> {{item.description}} </a>
+            <a mat-list-item (click)="toggle()" mat-list-item><mat-icon aria-hidden="false">close</mat-icon> Close</a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        <div fxFill fxFlex="100" fxLayout="column" style="min-height: 100vh;">
+        <main class="main-content">
             <router-outlet></router-outlet>
-        </div>
+        </main>
     </mat-sidenav-content>
 </mat-sidenav-container>

@@ -9,5 +9,5 @@ import { MenuItem } from 'src/models/layout/menuItem';
 export class AppComponent {
   title: string = 'Shuffler app';
 
-  menuItems: Array<MenuItem> = [{description: 'Test', link: '/test'}];
+  menuItems: Array<MenuItem> = [{description: 'Test', link: '/test', icon:"home"}];
 }

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToggleService {
 
-  toggle$: Subject<void> = new Subject<void>();
+  readonly toggle$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
   toggle(): void {
-    this.toggle$.next();
+    this.toggle$.next(!this.toggle$.value);
   }
   
 }

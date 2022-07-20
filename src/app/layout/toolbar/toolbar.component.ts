@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MenuItem } from 'src/models/layout/menuItem';
-import { UnsubscribeHelper } from 'src/utils/unsucribe/unsubscribe';
 import { ToggleService } from '../services/toggle.service';
 
 @Component({
@@ -8,7 +7,7 @@ import { ToggleService } from '../services/toggle.service';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent{
 
   @Input()
   title: string = "My app";
@@ -16,19 +15,10 @@ export class ToolbarComponent implements OnInit {
   @Input()
   menuItems: Array<MenuItem> = [];
 
-  sub$: UnsubscribeHelper = new UnsubscribeHelper();
-
   constructor(private toggleService: ToggleService) { }
 
-  ngOnDestroy(): void {
-    this.sub$.unsubscribe();
-  }
-
-  ngOnInit(): void {
-  }
-
   toggle(): void {
-    this.toggleService.toggle$.next();
+    this.toggleService.toggle();
   }
 
 }
