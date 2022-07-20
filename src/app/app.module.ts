@@ -11,15 +11,19 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatIconModule} from '@angular/material/icon';
-import {MatCardModule} from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { ShuffleListComponent } from './shuffle-list/shuffle-list.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatListModule} from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatListModule } from '@angular/material/list';
 import { ShuffleListItemsFromLocalStorageService } from './shuffleServices/shuffle-list-items-from-local-storage.service';
+import { LayoutModule } from './layout/layout.module';
 
 
-const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatSnackBarModule, MatListModule];
+
+const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
+  ReactiveFormsModule, MatIconModule, MatCardModule, MatSnackBarModule,
+  MatListModule];
 
 @NgModule({
   declarations: [
@@ -33,7 +37,8 @@ const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule, Reactive
     FlexLayoutModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    LayoutModule
   ],
   providers: [ShuffleListItemsFromLocalStorageService],
   bootstrap: [AppComponent]

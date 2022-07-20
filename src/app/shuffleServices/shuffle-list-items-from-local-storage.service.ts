@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject } from 'rxjs';
 import { ShuffleListItem } from 'src/models/shuffleList';
+import { localStorageAvailable, retrive, save } from 'src/utils/localstorage/localstorage';
 
 
 const shuffleListItems = "shuffleListItems";
@@ -12,18 +13,21 @@ export class ShuffleListItemsFromLocalStorageService {
 
   shuffleList$: BehaviorSubject<Array<ShuffleListItem>> = new BehaviorSubject<Array<ShuffleListItem>>([]);
   shuffleList: Array<ShuffleListItem> = [];
+  canSave: boolean = localStorageAvailable();
 
 
   constructor(private _snackBar: MatSnackBar) { }
 
   restoreFromLocalStorage(): void {
+    if(!this.canSave) return;
+
     if(this.shuffleList.length > 0) return;
 
-    const itemsAsString = localStorage.getItem(shuffleListItems);
+    const items = retrive<Array<ShuffleListItem>>(shuffleListItems);
 
-    if(itemsAsString === null) return;
+    if(items === null) return;
 
-    this.shuffleList = JSON.parse(itemsAsString);
+    this.shuffleList = items;
     this.shuffleListNext();
   }
 
@@ -32,8 +36,8 @@ export class ShuffleListItemsFromLocalStorageService {
   }
 
   save(): void {
-    const itemsAsString = JSON.stringify(this.shuffleList);
-    localStorage.setItem(shuffleListItems, itemsAsString);
+    if(!this.canSave) return;
+    save(shuffleListItems, this.shuffleList)
   }
 
   add(item: ShuffleListItem): void {
