@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject } from 'rxjs';
 import { ShuffleListItem } from 'src/models/shuffleList';
-import { retrive, save } from 'src/utils/localstorage/localstorage';
+import { localStorageAvailable, retrive, save } from 'src/utils/localstorage/localstorage';
 
 
 const shuffleListItems = "shuffleListItems";
@@ -13,11 +13,14 @@ export class ShuffleListItemsFromLocalStorageService {
 
   shuffleList$: BehaviorSubject<Array<ShuffleListItem>> = new BehaviorSubject<Array<ShuffleListItem>>([]);
   shuffleList: Array<ShuffleListItem> = [];
+  canSave: boolean = localStorageAvailable();
 
 
   constructor(private _snackBar: MatSnackBar) { }
 
   restoreFromLocalStorage(): void {
+    if(!this.canSave) return;
+
     if(this.shuffleList.length > 0) return;
 
     const items = retrive<Array<ShuffleListItem>>(shuffleListItems);
@@ -33,6 +36,7 @@ export class ShuffleListItemsFromLocalStorageService {
   }
 
   save(): void {
+    if(!this.canSave) return;
     save(shuffleListItems, this.shuffleList)
   }
 
