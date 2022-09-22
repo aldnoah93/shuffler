@@ -17,9 +17,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
   @Input()
   menuItems: Array<MenuItem> = [];
 
-  sub$: UnsubscribeHelper = new UnsubscribeHelper();
+  //sub$: UnsubscribeHelper = new UnsubscribeHelper();
 
-  constructor(private toggleService: ToggleService) { }
+  constructor(private toggleService: ToggleService, private sub$: UnsubscribeHelper) { }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
