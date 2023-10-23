@@ -9,6 +9,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { ToggleService } from './services/toggle.service';
+import { UnsubscribeHelper } from 'src/utils/unsucribe/unsubscribe';
 
 const ngMAterialModules = [MatToolbarModule, MatIconModule, MatButtonModule,
   MatSidenavModule, MatListModule]
@@ -28,7 +29,8 @@ const ngMAterialModules = [MatToolbarModule, MatIconModule, MatButtonModule,
     SidenavComponent
   ],
   providers: [
-    ToggleService
+    ToggleService,
+    { provide: UnsubscribeHelper, useFactory: () => () => new UnsubscribeHelper() }
   ]
 })
 export class LayoutModule { }
