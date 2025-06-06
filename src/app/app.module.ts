@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShuffleComponent } from './shuffle/shuffle.component';
 import { ShuffleInputFormComponent } from './shuffle-input-form/shuffle-input-form.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
@@ -34,7 +33,6 @@ const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
   ],
   imports: [
     ...ngModules,
-    FlexLayoutModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
