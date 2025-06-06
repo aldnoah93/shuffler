@@ -30,7 +30,7 @@ const ngMAterialModules = [MatToolbarModule, MatIconModule, MatButtonModule,
   ],
   providers: [
     ToggleService,
-    { provide: UnsubscribeHelper, useFactory: () => () => new UnsubscribeHelper() }
+    { provide: UnsubscribeHelper, useFactory: () => new UnsubscribeHelper() }
   ]
 })
 export class LayoutModule { }
