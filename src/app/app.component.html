@@ -1,5 +1,5 @@
 <div class="flex flex-col min-h-screen justify-between items-stretch">
-  <app-toolbar [title]="title" [menuItems]="menuItems"></app-toolbar>
-  <app-sidenav class="flex-1" [menuItems]="menuItems"></app-sidenav>
+  <app-toolbar bind-title="title" bind-menuItems="menuItems"></app-toolbar>
+  <app-sidenav class="flex-1" bind-menuItems="menuItems"></app-sidenav>
   <!--<footer>footer text</footer>-->
 </div>

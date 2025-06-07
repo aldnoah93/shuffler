@@ -25,18 +25,17 @@ const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
   MatListModule];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ShuffleComponent,
-    ShuffleInputFormComponent,
-    ShuffleListComponent,
-  ],
+  declarations: [],
   imports: [
     ...ngModules,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    LayoutModule
+    LayoutModule,
+    AppComponent,
+    ShuffleComponent,
+    ShuffleInputFormComponent,
+    ShuffleListComponent
   ],
   providers: [ShuffleListItemsFromLocalStorageService],
   bootstrap: [AppComponent]
