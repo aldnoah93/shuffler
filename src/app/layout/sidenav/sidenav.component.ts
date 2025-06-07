@@ -1,11 +1,25 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import { CommonModule } from '@angular/common';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MenuItem } from 'src/models/layout/menuItem';
 import { UnsubscribeHelper } from 'src/utils/unsucribe/unsubscribe';
 import { ToggleService } from '../services/toggle.service';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-sidenav',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    RouterModule,
+    MatButtonModule
+  ],
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })

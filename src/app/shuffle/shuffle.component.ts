@@ -1,13 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { ShuffleListItem } from 'src/models/shuffleList';
 import { fisherYatesShuffle } from 'src/utils/shuffle/shuffle';
 import { v4 as uuid } from "uuid";
 import { ShuffleListItemsFromLocalStorageService } from '../shuffleServices/shuffle-list-items-from-local-storage.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ShuffleInputFormComponent } from '../shuffle-input-form/shuffle-input-form.component';
+import { ShuffleListComponent } from '../shuffle-list/shuffle-list.component';
 
 @Component({
   selector: 'app-shuffle',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    ShuffleInputFormComponent,
+    ShuffleListComponent
+  ],
   templateUrl: './shuffle.component.html',
   styleUrls: ['./shuffle.component.scss']
 })

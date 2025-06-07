@@ -2,11 +2,15 @@
   <mat-card-title>{{listTitle}}</mat-card-title>
   <mat-card-content>
     <mat-list role="list">
-      <mat-list-item role="listitem" *ngFor="let item of shuffleListItem">{{item.description}}
-        <button *ngIf="canDelete" mat-button (click)="itemDeleteById(item.id)" color="warn">
-          <mat-icon aria-hidden="false" aria-label="Delete icon">close</mat-icon>
-        </button>
-      </mat-list-item>
+      @for (item of shuffleListItem; track item.id) {
+        <mat-list-item role="listitem">{{item.description}}
+          @if (canDelete) {
+            <button mat-button on-click="itemDeleteById(item.id)" color="warn">
+              <mat-icon aria-hidden="false" aria-label="Delete icon">close</mat-icon>
+            </button>
+          }
+        </mat-list-item>
+      }
     </mat-list>
   </mat-card-content>
 </mat-card>

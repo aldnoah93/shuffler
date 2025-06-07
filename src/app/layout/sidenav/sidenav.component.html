@@ -1,8 +1,13 @@
 <mat-sidenav-container class="flex-1">
   <mat-sidenav #sidenav>
     <mat-nav-list class="w-full md:w-2/5">
-      <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'{{item.link}}'"><mat-icon *ngIf="!!item.icon" aria-hidden="false">{{item.icon}}</mat-icon> {{item.description}} </a>
-      <a mat-list-item (click)="toggle()" mat-list-item><mat-icon aria-hidden="false">close</mat-icon> Close</a>
+      @for (item of menuItems; track item.link) {
+        <a mat-list-item bind-routerLink="item.link">
+          @if (item.icon) { <mat-icon aria-hidden="false">{{item.icon}}</mat-icon> }
+          {{item.description}} 
+        </a>
+      }
+      <a mat-list-item on-click="toggle()" mat-list-item><mat-icon aria-hidden="false">close</mat-icon> Close</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

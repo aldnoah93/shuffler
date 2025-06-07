@@ -1,18 +1,18 @@
 <section class="flex flex-col flex-wrap items-center mt-8">
   <div class="flex flex-col items-center md:flex-row md:items-start gap-8">
     <div class="w-full md:w-1/3">
-      <app-shuffle-input-form (newItemEvent)="addItem($event)"></app-shuffle-input-form>
+      <app-shuffle-input-form on-newItemEvent="addItem($event)"></app-shuffle-input-form>
     </div>
     <div class="w-full md:w-1/3">
-      <app-shuffle-list class="flex-1" [listTitle]="'Added items'" [shuffleListItem]="shuffleItems"
-        (itemDeleteByIdEvent)="deleteItemById($event)"></app-shuffle-list>
+      <app-shuffle-list class="flex-1" bind-listTitle="'Added items'" bind-shuffleListItem="shuffleItems"
+        on-itemDeleteByIdEvent="deleteItemById($event)"></app-shuffle-list>
     </div>
     <div class="w-full md:w-1/3 flex flex-col md:flex-row">
-      <button mat-button (click)="shuffle()" color="accent">
+      <button mat-button on-click="shuffle()" color="accent">
         <mat-icon aria-hidden="false" aria-label="Delete icon">autorenew</mat-icon>
       </button>
-      <app-shuffle-list class="flex-1" [listTitle]="'Shuffled items'" [shuffleListItem]="shuffledItems"
-        (itemDeleteByIdEvent)="deleteItemById($event)"></app-shuffle-list>
+      <app-shuffle-list class="flex-1" bind-listTitle="'Shuffled items'" bind-shuffleListItem="shuffledItems"
+        on-itemDeleteByIdEvent="deleteItemById($event)"></app-shuffle-list>
     </div>
   </div>
 </section>

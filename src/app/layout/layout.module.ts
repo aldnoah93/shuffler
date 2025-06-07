@@ -15,14 +15,12 @@ const ngMAterialModules = [MatToolbarModule, MatIconModule, MatButtonModule,
   MatSidenavModule, MatListModule]
 
 @NgModule({
-  declarations: [
-    ToolbarComponent,
-    SidenavComponent
-  ],
   imports: [
     CommonModule,
     ...ngMAterialModules,
-    RouterModule
+    RouterModule,
+    ToolbarComponent,
+    SidenavComponent
   ],
   exports: [
     ToolbarComponent,

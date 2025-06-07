@@ -1,10 +1,10 @@
 <mat-card class="flex flex-row items-center justify-around">
-  <form [formGroup]="shuffleInputForm" (ngSubmit)="submitForm()" novalidate>
+  <form bind-formGroup="shuffleInputForm" on-ngSubmit="submitForm()" novalidate>
     <mat-form-field class="example-full-width">
       <mat-label>Item description</mat-label>
       <input matInput placeholder="Description" type="text" formControlName="description">
     </mat-form-field>
-    <button type="submit" [disabled]="!shuffleInputForm.valid" mat-button color="primary">Add <mat-icon
+    <button type="submit" bind-disabled="!shuffleInputForm.valid" mat-button color="primary">Add <mat-icon
         aria-hidden="false" aria-label="Add icon">add</mat-icon></button>
   </form>
 </mat-card>
