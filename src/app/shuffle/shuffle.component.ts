@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { ShuffleListItem } from 'src/models/shuffleList';
 import { fisherYatesShuffle } from 'src/utils/shuffle/shuffle';

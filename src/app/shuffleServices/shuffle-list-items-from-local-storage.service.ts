@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { BehaviorSubject } from 'rxjs';
 import { ShuffleListItem } from 'src/models/shuffleList';
 import { localStorageAvailable, retrive, save } from 'src/utils/localstorage/localstorage';
