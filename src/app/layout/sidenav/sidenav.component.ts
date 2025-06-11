@@ -5,9 +5,10 @@ import { UnsubscribeHelper } from 'src/utils/unsucribe/unsubscribe';
 import { ToggleService } from '../services/toggle.service';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+    selector: 'app-sidenav',
+    templateUrl: './sidenav.component.html',
+    styleUrls: ['./sidenav.component.scss'],
+    standalone: false
 })
 export class SidenavComponent implements OnInit, OnDestroy {
 

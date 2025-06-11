@@ -7,9 +7,10 @@ import { v4 as uuid } from "uuid";
 import { ShuffleListItemsFromLocalStorageService } from '../shuffleServices/shuffle-list-items-from-local-storage.service';
 
 @Component({
-  selector: 'app-shuffle',
-  templateUrl: './shuffle.component.html',
-  styleUrls: ['./shuffle.component.scss']
+    selector: 'app-shuffle',
+    templateUrl: './shuffle.component.html',
+    styleUrls: ['./shuffle.component.scss'],
+    standalone: false
 })
 export class ShuffleComponent implements OnInit, OnDestroy {
 

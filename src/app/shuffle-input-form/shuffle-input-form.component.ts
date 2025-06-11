@@ -3,9 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-shuffle-input-form',
-  templateUrl: './shuffle-input-form.component.html',
-  styleUrls: ['./shuffle-input-form.component.scss']
+    selector: 'app-shuffle-input-form',
+    templateUrl: './shuffle-input-form.component.html',
+    styleUrls: ['./shuffle-input-form.component.scss'],
+    standalone: false
 })
 export class ShuffleInputFormComponent implements OnInit {
 

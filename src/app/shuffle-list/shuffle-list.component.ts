@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ShuffleListItem } from 'src/models/shuffleList';
 
 @Component({
-  selector: 'app-shuffle-list',
-  templateUrl: './shuffle-list.component.html',
-  styleUrls: ['./shuffle-list.component.scss']
+    selector: 'app-shuffle-list',
+    templateUrl: './shuffle-list.component.html',
+    styleUrls: ['./shuffle-list.component.scss'],
+    standalone: false
 })
 export class ShuffleListComponent implements OnInit {
 
