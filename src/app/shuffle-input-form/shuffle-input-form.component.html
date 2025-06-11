@@ -1,5 +1,5 @@
 <mat-card class="flex flex-row items-center justify-around">
-  <form [formGroup]="shuffleInputForm" (ngSubmit)="submitForm()" novalidate>
+  <form [formGroup]="shuffleInputForm" (ngSubmit)="submitForm()" novalidate class="space-y-4 w-full">
     <mat-form-field class="example-full-width">
       <mat-label>Item description</mat-label>
       <input matInput placeholder="Description" type="text" formControlName="description">
