@@ -1,48 +1,21 @@
 <div class="app-shell flex min-h-screen min-h-[100dvh] flex-col gap-6 py-6 sm:py-7">
-  <header class="hero-banner">
-    <div class="hero-copy">
-      <p class="app-kicker text-white/70">Shuffler workspace</p>
-      <h1 class="hero-title">Randomize lists without losing the source.</h1>
-      <p class="hero-text">
-        Add items once, edit them in place, and generate a fresh order only when you need it.
-      </p>
-    </div>
+  <app-shuffle-header
+    [sourceItemsCount]="shuffleItems.length"
+    [shuffledItemsCount]="shuffledItems.length"
+    [canCopy]="canCopy"
+    [canClearShuffled]="canClearShuffled"
+    [canShuffle]="canShuffle"
+    (copyShuffledEvent)="copyShuffledList()"
+    (clearShuffledEvent)="clearShuffled()"
+    (clearAllEvent)="confirmClearAll()"
+    (shuffleEvent)="shuffle()"></app-shuffle-header>
 
-    <div class="hero-side">
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <span class="hero-stat__value">{{ shuffleItems.length }}</span>
-          <span class="hero-stat__label">Source items</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hero-stat__value">{{ shuffledItems.length }}</span>
-          <span class="hero-stat__label">Shuffled items</span>
-        </div>
-      </div>
-
-      <div class="hero-actions hidden lg:flex">
-        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="copyShuffledList()" [disabled]="!canCopy">
-          Copy shuffled
-        </button>
-        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="clearShuffled()" [disabled]="!canClearShuffled">
-          Clear shuffled
-        </button>
-        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="confirmClearAll()" [disabled]="!shuffleItems.length">
-          Clear all
-        </button>
-        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="shuffle()" [disabled]="!canShuffle">
-          Shuffle now
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex flex-1 flex-col gap-6 pb-32 lg:pb-0">
-    <section class="grid gap-4 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)] xl:gap-5">
+  <main class="flex flex-1 flex-col gap-7 pb-32 lg:pb-0">
+    <section class="grid gap-5 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)] xl:gap-6">
       <app-shuffle-input-form class="block" (addItemsEvent)="addItems($event)"></app-shuffle-input-form>
 
-      <section class="flex flex-col gap-4">
-        <section class="glass-panel flex flex-col gap-4 p-6 sm:p-7">
+      <section class="flex flex-col gap-5">
+        <section class="glass-panel flex flex-col gap-5 p-7 sm:p-8">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p class="app-kicker">Status</p>
@@ -58,9 +31,11 @@
             </span>
           </div>
 
-          <div *ngIf="status === 'invalidated'" class="rounded-[20px] border border-[rgba(239,159,69,0.22)] bg-[rgba(239,159,69,0.12)] px-5 py-4 text-[0.95rem] leading-[1.6] text-[#8c5316]">
-            Source changed. Shuffle again to generate a new order.
-          </div>
+          @if (status === 'invalidated') {
+            <div class="rounded-[20px] border border-[rgba(239,159,69,0.22)] bg-[rgba(239,159,69,0.12)] px-5 py-4 text-[0.95rem] leading-[1.6] text-[#8c5316]">
+              Source changed. Shuffle again to generate a new order.
+            </div>
+          }
         </section>
 
         <section class="hidden lg:grid lg:grid-cols-2 lg:gap-6">
@@ -93,7 +68,7 @@
         <section class="glass-panel overflow-hidden lg:hidden">
           <mat-tab-group [(selectedIndex)]="mobileTabIndex" dynamicHeight>
             <mat-tab [label]="'Original (' + shuffleItems.length + ')'">
-              <div class="p-5 pt-3">
+              <div class="p-6 pt-4 sm:p-7 sm:pt-5">
                 <app-shuffle-list
                   class="block"
                   [listEyebrow]="'Source'"
@@ -110,7 +85,7 @@
             </mat-tab>
 
             <mat-tab [label]="'Shuffled (' + shuffledItems.length + ')'">
-              <div class="p-5 pt-3">
+              <div class="p-6 pt-4 sm:p-7 sm:pt-5">
                 <app-shuffle-list
                   class="block"
                   [listEyebrow]="'Output'"

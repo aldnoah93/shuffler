@@ -23,7 +23,7 @@
         cdkTextareaAutosize
         cdkAutosizeMinRows="6"
         cdkAutosizeMaxRows="12"
-        placeholder="Alex&#10;Morgan&#10;Taylor"
+        placeholder="Item 1&#10;Item 2&#10;Item 3"
         formControlName="description"></textarea>
       <mat-hint align="start">One line per item keeps the source list readable.</mat-hint>
       <mat-hint align="end">{{ pendingCountLabel }}</mat-hint>
@@ -32,7 +32,7 @@
       }
     </mat-form-field>
 
-    <div class="flex flex-col gap-3 rounded-[16px] border border-[rgba(15,39,48,0.1)] bg-[rgba(15,118,110,0.06)] px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col gap-4 rounded-[16px] border border-[rgba(15,39,48,0.1)] bg-[rgba(15,118,110,0.06)] px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p class="m-0 font-semibold text-[var(--app-text)]">Ready to append to the source list</p>
         <p class="m-0 pt-1 text-[0.94rem] leading-[1.5] text-[var(--app-muted)]">Focus returns here after each submission so you can keep pasting or typing.</p>

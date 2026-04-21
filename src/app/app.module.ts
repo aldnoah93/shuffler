@@ -23,6 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { EditItemDialogComponent } from './dialogs/edit-item-dialog/edit-item-dialog.component';
+import { ShuffleHeaderComponent } from './shuffle-header/shuffle-header.component';
 import { ShuffleListItemsFromLocalStorageService } from './shuffleServices/shuffle-list-items-from-local-storage.service';
  
 const materialModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
@@ -37,6 +38,7 @@ const appModules = [BrowserModule, AppRoutingModule, BrowserAnimationsModule,
     AppComponent,
     ShuffleComponent,
     ShuffleInputFormComponent,
+    ShuffleHeaderComponent,
     ShuffleListComponent,
     ConfirmDialogComponent,
     EditItemDialogComponent,

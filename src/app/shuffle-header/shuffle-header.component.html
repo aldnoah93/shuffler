@@ -1,0 +1,37 @@
+<header class="hero-banner">
+  <div class="hero-copy">
+    <p class="app-kicker text-white/70">Shuffler workspace</p>
+    <h1 class="hero-title">Randomize lists without losing the source.</h1>
+    <p class="hero-text">
+      Add items once, edit them in place, and generate a fresh order only when you need it.
+    </p>
+  </div>
+
+  <div class="hero-side">
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat__value">{{ sourceItemsCount }}</span>
+        <span class="hero-stat__label">Source items</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat__value">{{ shuffledItemsCount }}</span>
+        <span class="hero-stat__label">Shuffled items</span>
+      </div>
+    </div>
+
+    <div class="hero-actions hidden lg:flex">
+      <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="copyShuffled()" [disabled]="!canCopy">
+        Copy shuffled
+      </button>
+      <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="clearShuffled()" [disabled]="!canClearShuffled">
+        Clear shuffled
+      </button>
+      <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="clearAll()" [disabled]="!sourceItemsCount">
+        Clear all
+      </button>
+      <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="shuffle()" [disabled]="!canShuffle">
+        Shuffle now
+      </button>
+    </div>
+  </div>
+</header>
