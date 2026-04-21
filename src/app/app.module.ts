@@ -1,3 +1,5 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -13,16 +15,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ShuffleListComponent } from './shuffle-list/shuffle-list.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { EditItemDialogComponent } from './dialogs/edit-item-dialog/edit-item-dialog.component';
 import { ShuffleListItemsFromLocalStorageService } from './shuffleServices/shuffle-list-items-from-local-storage.service';
-import { LayoutModule } from './layout/layout.module';
+ 
+const materialModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
+  MatIconModule, MatCardModule, MatDialogModule, MatSnackBarModule,
+  MatListModule, MatMenuModule, MatTabsModule, MatToolbarModule];
 
-
-
-const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
-  ReactiveFormsModule, MatIconModule, MatCardModule, MatSnackBarModule,
-  MatListModule];
+const appModules = [BrowserModule, AppRoutingModule, BrowserAnimationsModule,
+  ReactiveFormsModule, ClipboardModule, TextFieldModule];
 
 @NgModule({
   declarations: [
@@ -30,13 +38,12 @@ const ngModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
     ShuffleComponent,
     ShuffleInputFormComponent,
     ShuffleListComponent,
+    ConfirmDialogComponent,
+    EditItemDialogComponent,
   ],
   imports: [
-    ...ngModules,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule
+    ...materialModules,
+    ...appModules
   ],
   providers: [ShuffleListItemsFromLocalStorageService],
   bootstrap: [AppComponent]

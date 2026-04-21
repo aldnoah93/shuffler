@@ -1,16 +1,72 @@
-<mat-card class="flex flex-col justify-around items-center">
-  <mat-card-title>{{listTitle}}</mat-card-title>
-  <mat-card-content>
-    <mat-list role="list">
-      @for (item of shuffleListItem; track item) {
-        <mat-list-item role="listitem">{{item.description}}
-          @if (canDelete) {
-            <button mat-button (click)="itemDeleteById(item.id)" color="warn">
-              <mat-icon aria-hidden="false" aria-label="Delete icon">close</mat-icon>
+<mat-card class="surface-card flex h-full flex-col p-6 sm:p-7">
+  <div class="flex items-start justify-between gap-3">
+    <div class="flex flex-col gap-1.5">
+      <mat-card-subtitle class="!m-0 text-[0.78rem] uppercase tracking-[0.16em] text-[var(--app-muted)]">
+        {{ listEyebrow }}
+      </mat-card-subtitle>
+      <mat-card-title class="!m-0 font-serif text-[1.45rem] leading-[1.15] text-[var(--app-text)]">{{ listTitle }}</mat-card-title>
+      <p *ngIf="listHint" class="m-0 text-sm leading-[1.55] text-[var(--app-muted)]">{{ listHint }}</p>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-end gap-2">
+      <ng-container *ngIf="readOnly">
+        <span class="app-chip">
+          <span class="app-dot"></span>
+          Read only
+        </span>
+      </ng-container>
+
+      <div class="rounded-full border border-[rgba(15,39,48,0.1)] bg-[rgba(15,118,110,0.06)] px-3 py-1 text-[0.76rem] font-semibold uppercase tracking-[0.12em] text-[var(--app-muted)]">
+        {{ shuffleListItem.length }} {{ shuffleListItem.length === 1 ? 'item' : 'items' }}
+      </div>
+    </div>
+  </div>
+
+  <mat-card-content class="!m-0 flex min-h-0 flex-1 !px-0 !pb-0 !pt-4">
+    <ng-container *ngIf="shuffleListItem.length > 0; else emptyState">
+      <div class="flex min-h-0 w-full flex-col gap-2 overflow-y-auto pr-1" role="list">
+        <div
+          *ngFor="let item of shuffleListItem; let index = index; trackBy: trackById"
+          class="flex items-start gap-3 rounded-[14px] border border-[rgba(15,39,48,0.12)] bg-white px-4 py-3.5"
+          role="listitem">
+          <span
+            class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--app-primary-soft)] text-[0.92rem] font-semibold text-[var(--app-primary)]">
+            {{ index + 1 }}
+          </span>
+          <span class="min-w-0 flex-1 break-words pt-1 leading-[1.5] text-[var(--app-text)]">{{ item.description }}</span>
+          <div class="flex shrink-0 items-center gap-1">
+            <button
+              *ngIf="canEdit"
+              mat-icon-button
+              class="shrink-0 rounded-full border border-transparent text-[var(--app-muted)] transition hover:border-[rgba(15,39,48,0.1)] hover:bg-[rgba(15,118,110,0.08)] hover:text-[var(--app-primary)]"
+              (click)="editItem(item)"
+              aria-label="Edit item">
+              <mat-icon aria-hidden="false" aria-label="Edit icon">edit</mat-icon>
             </button>
-          }
-        </mat-list-item>
-      }
-    </mat-list>
+
+            <button
+              *ngIf="canDelete"
+              mat-icon-button
+              class="shrink-0 rounded-full border border-transparent text-[var(--app-muted)] transition hover:border-[rgba(15,39,48,0.1)] hover:bg-[rgba(184,71,71,0.08)] hover:text-[#b84747]"
+              (click)="itemDelete(item)"
+              color="warn"
+              aria-label="Delete item">
+              <mat-icon aria-hidden="false" aria-label="Delete icon">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div
+        class="flex w-full flex-1 flex-col items-center justify-center gap-3 rounded-[16px] border border-dashed border-[rgba(15,39,48,0.2)] bg-[rgba(15,118,110,0.04)] px-7 py-12 text-center text-[var(--app-muted)]">
+        <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-white">
+          <mat-icon aria-hidden="false" class="!h-8 !w-8 !text-[2rem]">playlist_add</mat-icon>
+        </div>
+        <p class="m-0 text-base font-medium text-[var(--app-text)]">{{ emptyTitle }}</p>
+        <span class="max-w-[18rem] leading-[1.55]">{{ emptyMessage }}</span>
+      </div>
+    </ng-template>
   </mat-card-content>
 </mat-card>

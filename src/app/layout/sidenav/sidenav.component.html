@@ -1,23 +1,52 @@
-<mat-sidenav-container class="flex-1">
-  <mat-sidenav #sidenav class="!w-auto p-0" [disableClose]="false">
-    <mat-nav-list class="w-max">
-      @for (item of menuItems; track item) {
-        <a mat-list-item [routerLink]="item.link" class="whitespace-nowrap">
-          @if (!!item.icon) {
-            <mat-icon aria-hidden="false">{{ item.icon }}</mat-icon>
-          }
-          {{ item.description }}
+<mat-sidenav-container class="h-full bg-transparent">
+  <mat-sidenav
+    #sidenav
+    class="w-[86vw] max-w-[320px] border-r border-[var(--app-border)] bg-[rgba(255,252,247,0.98)] shadow-[22px_0_50px_rgba(27,46,56,0.16)]"
+    [disableClose]="false">
+    <div class="flex min-h-full flex-col">
+      <div class="border-b border-[var(--app-border)] px-6 pb-5 pt-6">
+        <p class="m-0 text-[0.72rem] uppercase tracking-[0.24em] text-[var(--app-muted)]">Navigation</p>
+        <p class="m-0 pt-2 font-serif text-[1.45rem] font-bold text-[var(--app-text)]">Workspace</p>
+        <span class="m-0 block pt-2 text-[0.94rem] leading-[1.5] text-[var(--app-muted)]">
+          Move through the app and keep the shuffle board front and center.
+        </span>
+      </div>
+
+      <mat-nav-list class="flex-1 !pt-2 px-4 pb-4">
+        @for (item of menuItems; track item.link) {
+          <a
+            mat-list-item
+            [routerLink]="item.link"
+            routerLinkActive="!bg-[var(--app-primary-soft)] !text-[var(--app-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="mb-1 rounded-[16px] border border-transparent text-[var(--app-text)] transition hover:!bg-white hover:!text-[var(--app-primary)]">
+            @if (!!item.icon) {
+              <mat-icon aria-hidden="false">{{ item.icon }}</mat-icon>
+            }
+            {{ item.description }}
+          </a>
+        }
+
+        <a
+          mat-list-item
+          (click)="toggle()"
+          class="mb-1 rounded-[16px] border border-transparent text-[var(--app-text)] transition hover:!bg-white hover:!text-[var(--app-primary)]">
+          <mat-icon aria-hidden="false">close</mat-icon>
+          Close
         </a>
-      }
-      <a mat-list-item (click)="toggle()" class="whitespace-nowrap">
-        <mat-icon aria-hidden="false">close</mat-icon> Close
-      </a>
-    </mat-nav-list>
+      </mat-nav-list>
+
+      <div class="mx-4 mb-4 rounded-[24px] bg-[var(--app-primary-soft)] px-4 py-4 text-[0.92rem] leading-[1.55] text-[var(--app-muted)]">
+        Add entries, compare both orders side by side, and reshuffle without losing the source list.
+      </div>
+    </div>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <main class="h-full overflow-auto">
-      <router-outlet></router-outlet>
+  <mat-sidenav-content class="!overflow-hidden">
+    <main class="flex h-full flex-col overflow-y-auto px-4 pb-4 pt-2 sm:px-6 sm:pb-6 sm:pt-3 lg:px-8 lg:pb-8">
+      <div class="flex min-h-0 flex-1 flex-col [&>*]:block [&>*]:min-h-0 [&>*]:flex-1">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,18 @@
+<div class="p-6 sm:p-7">
+  <p class="app-kicker">Confirm action</p>
+  <h2 class="m-0 pt-2 font-serif text-[1.9rem] leading-[1.05] text-[var(--app-text)]">{{ data.title }}</h2>
+  <p class="m-0 pt-4 text-[0.98rem] leading-[1.65] text-[var(--app-muted)]">{{ data.message }}</p>
+
+  <div class="flex flex-col-reverse gap-3 pt-6 sm:flex-row sm:justify-end">
+    <button mat-stroked-button class="rounded-full" (click)="close(false)">
+      {{ data.cancelLabel || 'Cancel' }}
+    </button>
+    <button
+      mat-flat-button
+      class="rounded-full"
+      [class.confirm-dialog__warn]="data.tone === 'warn'"
+      (click)="close(true)">
+      {{ data.confirmLabel || 'Confirm' }}
+    </button>
+  </div>
+</div>

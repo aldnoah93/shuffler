@@ -1,6 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 @Component({
     selector: 'app-shuffle-input-form',
@@ -8,26 +7,54 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
     styleUrls: ['./shuffle-input-form.component.scss'],
     standalone: false
 })
-export class ShuffleInputFormComponent implements OnInit {
+export class ShuffleInputFormComponent {
+  @ViewChild('descriptionInput')
+  descriptionInput?: ElementRef<HTMLTextAreaElement>;
 
-  shuffleInputForm: FormGroup;
+  shuffleInputForm = new FormGroup({
+    description: new FormControl('', {
+      nonNullable: true,
+      validators: [ShuffleInputFormComponent.trimmedRequiredValidator],
+    })
+  });
+
   @Output()
-  newItemEvent = new EventEmitter<string>();
+  addItemsEvent = new EventEmitter<string[]>();
 
-  constructor() {
-    this.shuffleInputForm = new FormGroup({
-      description: new FormControl<string | null>(null, [Validators.required])
-    });
+  get descriptionControl(): FormControl<string> {
+    return this.shuffleInputForm.controls.description;
   }
 
-  ngOnInit(): void {
+  get pendingCount(): number {
+    return this.parseDescriptions(this.descriptionControl.value).length;
+  }
+
+  get pendingCountLabel(): string {
+    return `${this.pendingCount} ${this.pendingCount === 1 ? 'item' : 'items'} ready`;
   }
 
   submitForm(): void {
-    if (this.shuffleInputForm.valid) {
-      this.newItemEvent.emit(this.shuffleInputForm.value.description);
-      this.shuffleInputForm.reset();
+    const descriptions = this.parseDescriptions(this.descriptionControl.value);
+
+    if (!descriptions.length) {
+      this.descriptionControl.markAsTouched();
+      this.descriptionControl.setErrors({ required: true });
+      return;
     }
+
+    this.addItemsEvent.emit(descriptions);
+    this.shuffleInputForm.reset({ description: '' });
+    queueMicrotask(() => this.descriptionInput?.nativeElement.focus());
   }
 
+  private parseDescriptions(value: string): string[] {
+    return value
+      .split(/\r?\n/)
+      .map(description => description.trim())
+      .filter(Boolean);
+  }
+
+  private static trimmedRequiredValidator(control: AbstractControl<string>): ValidationErrors | null {
+    return control.value.trim().length > 0 ? null : { required: true };
+  }
 }

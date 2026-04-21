@@ -1,10 +1,51 @@
-<mat-card class="flex flex-row items-center justify-around">
-  <form [formGroup]="shuffleInputForm" (ngSubmit)="submitForm()" novalidate class="space-y-4 w-full">
-    <mat-form-field class="example-full-width">
-      <mat-label>Item description</mat-label>
-      <input matInput placeholder="Description" type="text" formControlName="description">
+<mat-card class="surface-card flex h-full flex-col gap-6 p-6 sm:p-7">
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0">
+      <p class="app-kicker">Input</p>
+      <mat-card-title class="!m-0 pt-1.5 font-serif text-[1.65rem] leading-[1.08] text-[var(--app-text)]">Add items</mat-card-title>
+      <p class="m-0 pt-1.5 leading-[1.55] text-[var(--app-muted)]">
+        Paste one item per line. Blank lines are ignored, and duplicates stay exactly as entered.
+      </p>
+    </div>
+
+    <span class="app-chip app-chip--strong self-start">
+      <span class="app-dot"></span>
+      {{ pendingCountLabel }}
+    </span>
+  </div>
+
+  <form [formGroup]="shuffleInputForm" (ngSubmit)="submitForm()" novalidate class="flex flex-1 flex-col gap-4">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Items to add</mat-label>
+      <textarea
+        #descriptionInput
+        matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="6"
+        cdkAutosizeMaxRows="12"
+        placeholder="Alex&#10;Morgan&#10;Taylor"
+        formControlName="description"></textarea>
+      <mat-hint align="start">One line per item keeps the source list readable.</mat-hint>
+      <mat-hint align="end">{{ pendingCountLabel }}</mat-hint>
+      @if (descriptionControl.touched && descriptionControl.invalid) {
+        <mat-error>Enter at least one non-empty item.</mat-error>
+      }
     </mat-form-field>
-    <button type="submit" [disabled]="!shuffleInputForm.valid" mat-button color="primary">Add <mat-icon
-        aria-hidden="false" aria-label="Add icon">add</mat-icon></button>
+
+    <div class="flex flex-col gap-3 rounded-[16px] border border-[rgba(15,39,48,0.1)] bg-[rgba(15,118,110,0.06)] px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="m-0 font-semibold text-[var(--app-text)]">Ready to append to the source list</p>
+        <p class="m-0 pt-1 text-[0.94rem] leading-[1.5] text-[var(--app-muted)]">Focus returns here after each submission so you can keep pasting or typing.</p>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="shuffleInputForm.invalid"
+        mat-flat-button
+        class="w-full justify-center rounded-full !bg-[var(--app-primary)] !text-[#f8fbfb] shadow-[0_12px_24px_rgba(15,118,110,0.18)] sm:w-auto">
+        Add {{ pendingCount === 1 ? 'item' : 'items' }}
+        <mat-icon aria-hidden="false" aria-label="Add icon">add</mat-icon>
+      </button>
+    </div>
   </form>
 </mat-card>

@@ -1,18 +1,157 @@
-<section class="mx-auto flex flex-col flex-wrap items-center mt-8">
-  <div class="flex flex-row items-start md:flex-col gap-8">
-    <div class="w-full md:w-1/3">
-      <app-shuffle-input-form (newItemEvent)="addItem($event)"></app-shuffle-input-form>
+<div class="app-shell flex min-h-screen min-h-[100dvh] flex-col gap-6 py-6 sm:py-7">
+  <header class="hero-banner">
+    <div class="hero-copy">
+      <p class="app-kicker text-white/70">Shuffler workspace</p>
+      <h1 class="hero-title">Randomize lists without losing the source.</h1>
+      <p class="hero-text">
+        Add items once, edit them in place, and generate a fresh order only when you need it.
+      </p>
     </div>
-    <div class="w-full md:w-1/3">
-      <app-shuffle-list class="flex-1" [listTitle]="'Added items'" [shuffleListItem]="shuffleItems"
-        (itemDeleteByIdEvent)="deleteItemById($event)"></app-shuffle-list>
+
+    <div class="hero-side">
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat__value">{{ shuffleItems.length }}</span>
+          <span class="hero-stat__label">Source items</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat__value">{{ shuffledItems.length }}</span>
+          <span class="hero-stat__label">Shuffled items</span>
+        </div>
+      </div>
+
+      <div class="hero-actions hidden lg:flex">
+        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="copyShuffledList()" [disabled]="!canCopy">
+          Copy shuffled
+        </button>
+        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="clearShuffled()" [disabled]="!canClearShuffled">
+          Clear shuffled
+        </button>
+        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="confirmClearAll()" [disabled]="!shuffleItems.length">
+          Clear all
+        </button>
+        <button mat-flat-button class="rounded-full bg-white px-5 text-[#0f3341] shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="shuffle()" [disabled]="!canShuffle">
+          Shuffle now
+        </button>
+      </div>
     </div>
-    <div class="w-full md:w-1/3 flex flex-row md:flex-col">
-      <button mat-button (click)="shuffle()" color="accent">
-        <mat-icon aria-hidden="false" aria-label="Delete icon">autorenew</mat-icon>
+  </header>
+
+  <main class="flex flex-1 flex-col gap-6 pb-32 lg:pb-0">
+    <section class="grid gap-4 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)] xl:gap-5">
+      <app-shuffle-input-form class="block" (addItemsEvent)="addItems($event)"></app-shuffle-input-form>
+
+      <section class="flex flex-col gap-4">
+        <section class="glass-panel flex flex-col gap-4 p-6 sm:p-7">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="app-kicker">Status</p>
+              <h2 class="m-0 pt-2 font-serif text-[1.6rem] leading-[1.08] text-[var(--app-text)]">What happens next</h2>
+              <p class="m-0 pt-2 leading-[1.65] text-[var(--app-muted)]">
+                {{ statusHint }}
+              </p>
+            </div>
+
+            <span [class]="statusChipClass">
+              <span class="app-dot"></span>
+              {{ statusLabel }}
+            </span>
+          </div>
+
+          <div *ngIf="status === 'invalidated'" class="rounded-[20px] border border-[rgba(239,159,69,0.22)] bg-[rgba(239,159,69,0.12)] px-5 py-4 text-[0.95rem] leading-[1.6] text-[#8c5316]">
+            Source changed. Shuffle again to generate a new order.
+          </div>
+        </section>
+
+        <section class="hidden lg:grid lg:grid-cols-2 lg:gap-6">
+          <app-shuffle-list
+            class="block"
+            [listEyebrow]="'Source'"
+            [listTitle]="'Original order'"
+            [listHint]="'Edit or remove items here. This list is the source of truth.'"
+            [emptyTitle]="'Your source list is empty.'"
+            [emptyMessage]="'Add items in the input panel and they will appear here immediately.'"
+            [shuffleListItem]="shuffleItems"
+            [canEdit]="true"
+            [canDelete]="true"
+            (itemDeleteEvent)="deleteItem($event)"
+            (itemEditEvent)="editItem($event)"></app-shuffle-list>
+
+          <app-shuffle-list
+            class="block"
+            [listEyebrow]="'Output'"
+            [listTitle]="'Shuffled order'"
+            [listHint]="'Generated output stays read-only until you run another shuffle.'"
+            [emptyTitle]="shuffledEmptyTitle"
+            [emptyMessage]="shuffledEmptyMessage"
+            [shuffleListItem]="shuffledItems"
+            [readOnly]="true"
+            [canDelete]="false"
+            [canEdit]="false"></app-shuffle-list>
+        </section>
+
+        <section class="glass-panel overflow-hidden lg:hidden">
+          <mat-tab-group [(selectedIndex)]="mobileTabIndex" dynamicHeight>
+            <mat-tab [label]="'Original (' + shuffleItems.length + ')'">
+              <div class="p-5 pt-3">
+                <app-shuffle-list
+                  class="block"
+                  [listEyebrow]="'Source'"
+                  [listTitle]="'Original order'"
+                  [listHint]="'Edit or remove items here. This list is the source of truth.'"
+                  [emptyTitle]="'Your source list is empty.'"
+                  [emptyMessage]="'Add items in the input panel and they will appear here immediately.'"
+                  [shuffleListItem]="shuffleItems"
+                  [canEdit]="true"
+                  [canDelete]="true"
+                  (itemDeleteEvent)="deleteItem($event)"
+                  (itemEditEvent)="editItem($event)"></app-shuffle-list>
+              </div>
+            </mat-tab>
+
+            <mat-tab [label]="'Shuffled (' + shuffledItems.length + ')'">
+              <div class="p-5 pt-3">
+                <app-shuffle-list
+                  class="block"
+                  [listEyebrow]="'Output'"
+                  [listTitle]="'Shuffled order'"
+                  [listHint]="'Generated output stays read-only until you run another shuffle.'"
+                  [emptyTitle]="shuffledEmptyTitle"
+                  [emptyMessage]="shuffledEmptyMessage"
+                  [shuffleListItem]="shuffledItems"
+                  [readOnly]="true"
+                  [canDelete]="false"
+                  [canEdit]="false"></app-shuffle-list>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <div class="mobile-action-bar lg:hidden">
+    <div class="mobile-action-bar__panel">
+      <button mat-flat-button class="rounded-full !bg-white !px-5 !text-white !shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="shuffle()" [disabled]="!canShuffle">
+        Shuffle
       </button>
-      <app-shuffle-list class="flex-1" [listTitle]="'Shuffled items'" [shuffleListItem]="shuffledItems"
-        (itemDeleteByIdEvent)="deleteItemById($event)"></app-shuffle-list>
+      <button mat-flat-button class="rounded-full !bg-white !px-5 !text-white !shadow-[0_18px_34px_rgba(8,22,29,0.18)]" (click)="copyShuffledList()" [disabled]="!canCopy">
+        Copy
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="mobileActionMenu" aria-label="More actions">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
     </div>
   </div>
-</section>
+
+  <mat-menu #mobileActionMenu="matMenu">
+    <button mat-menu-item (click)="clearShuffled()" [disabled]="!canClearShuffled">
+      <mat-icon>layers_clear</mat-icon>
+      <span>Clear shuffled</span>
+    </button>
+    <button mat-menu-item (click)="confirmClearAll()" [disabled]="!shuffleItems.length">
+      <mat-icon>delete_sweep</mat-icon>
+      <span>Clear all</span>
+    </button>
+  </mat-menu>
+</div>
