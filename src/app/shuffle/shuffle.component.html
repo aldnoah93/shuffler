@@ -66,7 +66,7 @@
         </section>
 
         <section class="glass-panel overflow-hidden lg:hidden">
-          <mat-tab-group [(selectedIndex)]="mobileTabIndex" dynamicHeight>
+          <mat-tab-group [selectedIndex]="mobileTabIndex" (selectedIndexChange)="onMobileTabIndexChange($event)" dynamicHeight>
             <mat-tab [label]="'Original (' + shuffleItems.length + ')'">
               <div class="p-6 pt-4 sm:p-7 sm:pt-5">
                 <app-shuffle-list

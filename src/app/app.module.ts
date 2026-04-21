@@ -21,10 +21,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { EditItemDialogComponent } from './dialogs/edit-item-dialog/edit-item-dialog.component';
 import { ShuffleHeaderComponent } from './shuffle-header/shuffle-header.component';
 import { ShuffleListItemsFromLocalStorageService } from './shuffleServices/shuffle-list-items-from-local-storage.service';
+import { ShuffleEffects } from './store/shuffle/shuffle.effects';
+import { shuffleFeatureKey, shuffleReducer } from './store/shuffle/shuffle.reducer';
  
 const materialModules = [MatInputModule, MatButtonModule, MatFormFieldModule,
   MatIconModule, MatCardModule, MatDialogModule, MatSnackBarModule,
@@ -45,7 +49,9 @@ const appModules = [BrowserModule, AppRoutingModule, BrowserAnimationsModule,
   ],
   imports: [
     ...materialModules,
-    ...appModules
+    ...appModules,
+    StoreModule.forRoot({ [shuffleFeatureKey]: shuffleReducer }),
+    EffectsModule.forRoot([ShuffleEffects]),
   ],
   providers: [ShuffleListItemsFromLocalStorageService],
   bootstrap: [AppComponent]

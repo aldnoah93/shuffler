@@ -2,14 +2,23 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { ShuffleListItem } from 'src/models/shuffleList';
-import { fisherYatesShuffle } from 'src/utils/shuffle/shuffle';
 import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
 import { EditItemDialogComponent } from '../dialogs/edit-item-dialog/edit-item-dialog.component';
-import { ShuffleListItemsFromLocalStorageService } from '../shuffleServices/shuffle-list-items-from-local-storage.service';
-
-type ShuffleStatus = 'empty' | 'ready' | 'results' | 'invalidated';
+import {
+  addItems,
+  clearAll,
+  clearShuffled,
+  loadShuffleState,
+  removeItem,
+  setMobileTabIndex,
+  shuffleItems,
+  updateItem,
+} from '../store/shuffle/shuffle.actions';
+import { selectShuffleViewModel } from '../store/shuffle/shuffle.selectors';
+import { ShuffleStatus } from '../store/shuffle/shuffle.state';
 
 @Component({
     selector: 'app-shuffle',
@@ -18,7 +27,7 @@ type ShuffleStatus = 'empty' | 'ready' | 'results' | 'invalidated';
     standalone: false
 })
 export class ShuffleComponent implements OnInit, OnDestroy {
-  shuffleItems$?: Subscription;
+  viewModel$?: Subscription;
 
   shuffleItems: ShuffleListItem[] = [];
   shuffledItems: ShuffleListItem[] = [];
@@ -29,29 +38,22 @@ export class ShuffleComponent implements OnInit, OnDestroy {
     private readonly clipboard: Clipboard,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
-    private readonly shuffleListItemsFromLocalStorageService: ShuffleListItemsFromLocalStorageService
+    private readonly store: Store
   ) { }
 
   ngOnDestroy(): void {
-    this.shuffleItems$?.unsubscribe();
+    this.viewModel$?.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.shuffleItems$ = this.shuffleListItemsFromLocalStorageService.shuffleList$.subscribe(list => {
-      this.shuffleItems = list;
-
-      if (!list.length) {
-        this.shuffledItems = [];
-        this.status = 'empty';
-        return;
-      }
-
-      if (this.status === 'empty') {
-        this.status = 'ready';
-      }
+    this.viewModel$ = this.store.select(selectShuffleViewModel).subscribe(viewModel => {
+      this.shuffleItems = viewModel.sourceItems;
+      this.shuffledItems = viewModel.shuffledItems;
+      this.status = viewModel.status;
+      this.mobileTabIndex = viewModel.mobileTabIndex;
     });
 
-    this.shuffleListItemsFromLocalStorageService.restoreFromLocalStorage();
+    this.store.dispatch(loadShuffleState());
   }
 
   get sourceCountLabel(): string {
@@ -131,14 +133,14 @@ export class ShuffleComponent implements OnInit, OnDestroy {
   }
 
   addItems(descriptions: string[]): void {
-    const addedItems = this.shuffleListItemsFromLocalStorageService.addMany(descriptions);
-    if (!addedItems.length) {
+    const filteredDescriptions = descriptions.map(description => description.trim()).filter(Boolean);
+    if (!filteredDescriptions.length) {
       return;
     }
 
-    this.invalidateShuffledResults();
-    const itemLabel = addedItems.length === 1 ? 'item' : 'items';
-    this.snackBar.open(`${addedItems.length} ${itemLabel} added to the source list.`, 'Close', { duration: 2200 });
+    this.store.dispatch(addItems({ descriptions: filteredDescriptions }));
+    const itemLabel = filteredDescriptions.length === 1 ? 'item' : 'items';
+    this.snackBar.open(`${filteredDescriptions.length} ${itemLabel} added to the source list.`, 'Close', { duration: 2200 });
   }
 
   deleteItem(item: ShuffleListItem): void {
@@ -157,8 +159,7 @@ export class ShuffleComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.shuffleListItemsFromLocalStorageService.remove(item.id);
-      this.invalidateShuffledResults();
+      this.store.dispatch(removeItem({ id: item.id }));
     });
   }
 
@@ -175,8 +176,7 @@ export class ShuffleComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.shuffleListItemsFromLocalStorageService.update(item.id, trimmedDescription);
-      this.invalidateShuffledResults();
+      this.store.dispatch(updateItem({ id: item.id, description: trimmedDescription }));
     });
   }
 
@@ -200,16 +200,12 @@ export class ShuffleComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.shuffleListItemsFromLocalStorageService.clear();
-      this.shuffledItems = [];
-      this.status = 'empty';
-      this.mobileTabIndex = 0;
+      this.store.dispatch(clearAll());
     });
   }
 
   clearShuffled(): void {
-    this.shuffledItems = [];
-    this.status = this.shuffleItems.length > 0 ? 'ready' : 'empty';
+    this.store.dispatch(clearShuffled());
   }
 
   shuffle(): void {
@@ -217,9 +213,7 @@ export class ShuffleComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.shuffledItems = fisherYatesShuffle<ShuffleListItem>(this.shuffleItems);
-    this.status = 'results';
-    this.mobileTabIndex = 1;
+    this.store.dispatch(shuffleItems());
     this.snackBar.open('Shuffled order generated.', 'Close', { duration: 2200 });
   }
 
@@ -240,21 +234,7 @@ export class ShuffleComponent implements OnInit, OnDestroy {
     this.snackBar.open('Could not copy the shuffled list.', 'Close', { duration: 2200 });
   }
 
-  private invalidateShuffledResults(): void {
-    if (!this.shuffleItems.length) {
-      this.shuffledItems = [];
-      this.status = 'empty';
-      this.mobileTabIndex = 0;
-      return;
-    }
-
-    if (this.status === 'results' || this.status === 'invalidated') {
-      this.shuffledItems = [];
-      this.status = 'invalidated';
-      this.mobileTabIndex = 0;
-      return;
-    }
-
-    this.status = 'ready';
+  onMobileTabIndexChange(index: number): void {
+    this.store.dispatch(setMobileTabIndex({ index }));
   }
 }

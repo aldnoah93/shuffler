@@ -12,30 +12,20 @@ describe('ShuffleListItemsFromLocalStorageService', () => {
     localStorage.clear();
   });
 
-  it('should add many items and persist them', () => {
-    const items = service.addMany(['Alpha', 'Beta']);
+  it('should restore persisted items', () => {
+    localStorage.setItem('shuffleListItems', JSON.stringify([{ id: '1', description: 'Alpha' }]));
 
-    expect(items.length).toBe(2);
-    expect(service.shuffleList$.value.map(item => item.description)).toEqual(['Alpha', 'Beta']);
-    expect(JSON.parse(localStorage.getItem('shuffleListItems') ?? '[]').length).toBe(2);
+    const items = service.restoreFromLocalStorage();
+
+    expect(items).toEqual([{ id: '1', description: 'Alpha' }]);
   });
 
-  it('should update existing items', () => {
-    const [item] = service.addMany(['Alpha']);
+  it('should save items to local storage', () => {
+    service.saveToLocalStorage([{ id: '1', description: 'Alpha' }, { id: '2', description: 'Beta' }]);
 
-    service.update(item.id, 'Updated alpha');
-
-    expect(service.shuffleList$.value[0].description).toBe('Updated alpha');
-  });
-
-  it('should restore and clear persisted items', () => {
-    service.addMany(['Alpha']);
-
-    const restored = new ShuffleListItemsFromLocalStorageService();
-    restored.restoreFromLocalStorage();
-    expect(restored.shuffleList$.value.map(item => item.description)).toEqual(['Alpha']);
-
-    service.clear();
-    expect(service.shuffleList$.value).toEqual([]);
+    expect(JSON.parse(localStorage.getItem('shuffleListItems') ?? '[]')).toEqual([
+      { id: '1', description: 'Alpha' },
+      { id: '2', description: 'Beta' },
+    ]);
   });
 });
